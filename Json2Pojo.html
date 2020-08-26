@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Json2Pojo converter</title>
+<style>
+	textarea {
+		width: 80%;
+		height: 400px;
+		font-family: monospace;
+		display: block;
+		margin-bottom: 10px;
+	}
+	
+	div {
+		width: 80%;
+		margin-bottom: 10px;	
+	}
+	
+	button {
+		width: 80%;
+		height: 35px;
+		margin-bottom: 10px;		
+	}
+</style>
+
+<script src="JsonPojo.js"></script>
+
+
+
+</head>
+<body onload="documentLoaded()">
+<h2>Json To Pojo</h2>
+
+<textarea id="input">
+
+</textarea>
+<button>Convert To POJO Class</button>
+<textarea id="output"></textarea>
+<button id="cr">CREATE FILE</button>
+<a download="pojo.java" id="d_link" style="display: none">Download</a>
+<script>
+	(function () {
+	var textFile = null,
+		makeTextFile = function (text) {
+			var data = new Blob([text], {type: 'text/plain'});
+	
+			
+			if (textFile !== null) {
+				window.URL.revokeObjectURL(textFile);
+			}
+	
+			textFile = window.URL.createObjectURL(data);
+	
+			return textFile;
+		};
+	
+	
+		var cr = document.getElementById('cr'),
+			output = document.getElementById('output');
+	
+		cr.addEventListener("click", function () {
+			var link = document.getElementById('d_link');
+			link.href = makeTextFile(output.value);
+			link.style.display = 'block';
+		}, false);
+	})();
+	
+		function documentLoaded(evt) {	
+			document.querySelector('button').addEventListener("click", function(event) {
+					var json = document.querySelector('#input').value; 			
+				
+					document.querySelector('#output').value = jsonToPojoConverter().convert(json);
+	
+		// 			document.querySelector('#output').value += 
+		// 				JSON.stringify(objectDefinition)
+		// 					.replace(/(,|\{)/g, '$1\n  ')
+		// 					.replace(/(\})/g, '\n$1');
+							
+				});
+		}
+	</script>
+</body>
+</html>
